@@ -1,9 +1,14 @@
 import { useState } from 'react';
+import { TabBarProps } from '../types/props';
 
-const TabBar = () => {
-  const [activeTab, setActiveTab] = useState(0); // State to manage active tab
-
-  const tabs = ['Upcoming IDOs', 'Live IDOs', 'Ended IDOs']; // Tab names
+const TabBar = ({ activeTab, onTabChange }: TabBarProps) => {
+  const tabs = [
+    'All IDOs',
+    'Upcoming IDOs',
+    'Live IDOs',
+    'Ended IDOs',
+    'Claimable IDOs',
+  ]; // Tab names
 
   return (
     <div className="w-full font-semibold">
@@ -17,7 +22,7 @@ const TabBar = () => {
                   ? 'border-yellow text-yellow'
                   : 'border-primary text-grey-normal hover:text-yellow'
               }`}
-              onClick={() => setActiveTab(index)}
+              onClick={() => onTabChange(index)}
             >
               {tab}
             </button>

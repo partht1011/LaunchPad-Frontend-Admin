@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const StepModifier = () => {
+const StepLetter = () => {
   return (
     <div className="flex mt-10 items-center justify-center font-semibold">
       <h2 className="mr-5 text-green font-bold text-5xl">IDO</h2>
@@ -49,4 +49,4 @@ const StepModifier = () => {
   );
 };
 
-export default StepModifier;
+export default StepLetter;

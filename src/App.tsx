@@ -11,9 +11,9 @@ function App() {
     <div className="flex flex-col min-h-screen bg-primary ">
       <Header />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/ido" element={<HomePage />} />
         <Route path="/create-ido" element={<CreateIDO />} />
-        <Route path="/wishlist" element={<BlackList />} />
+        <Route path="/blacklist" element={<BlackList />} />
       </Routes>
       <Footer />
     </div>
