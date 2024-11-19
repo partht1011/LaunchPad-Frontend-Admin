@@ -1,0 +1,1 @@
+export const IDOFactoryAddress = '0xe56eBB425349A11177eFCEEa65b57ECef937185C'; // Replace with your contract address
