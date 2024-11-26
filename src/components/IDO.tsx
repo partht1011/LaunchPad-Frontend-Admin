@@ -1,12 +1,17 @@
-import { ethers } from 'ethers';
+import { Contract, ethers } from 'ethers';
 import { IDOProps } from '../types/props';
 import TokenLogo from './TokenLogo';
+import { useEffect, useState } from 'react';
+import { getIDOPool } from '../utils/ethersUtil';
+import { formatEther } from '../utils/commonUtils';
 
 const IDO = (ido: IDOProps) => {
-  console.log(ido);
-  const startTime = new Date(Number(ido.timeInfo.startTime));
-  const endTime = new Date(Number(ido.timeInfo.endTime));
-  const claimTime = new Date(Number(ido.timeInfo.claimTime));
+  const [IDOPool, setIDOPool] = useState<Contract>();
+  const [progress, setProgress] = useState(0);
+
+  const startTime = new Date(Number(ido.timeInfo.startTime) * 1000);
+  const endTime = new Date(Number(ido.timeInfo.endTime) * 1000);
+  const claimTime = new Date(Number(ido.timeInfo.claimTime) * 1000);
   const now = new Date();
 
   let status = { label: 'Upcoming', color: 'text-pink bg-pink/10' };
@@ -17,6 +22,25 @@ const IDO = (ido: IDOProps) => {
   } else if (now >= startTime) {
     status = { label: 'Live', color: 'text-green bg-green/10' };
   }
+
+  useEffect(() => {
+    const getIDOPoolFunc = async () => {
+      setIDOPool(await getIDOPool(ido.idoPool));
+    };
+
+    getIDOPoolFunc();
+  }, []);
+
+  useEffect(() => {
+    if (IDOPool) {
+      const getData = async () => {
+        const totalBuyAmount = formatEther(await IDOPool.getTotalBuyAmount());
+        setProgress((totalBuyAmount * 100) / formatEther(ido.saleInfo.softCap));
+      };
+      getData();
+    }
+  }, [IDOPool]);
+
   return (
     <div
       className="flex flex-col justify-between w-[350px] h-[480px] px-6 py-6 rounded-2xl border border-grey-light/10 bg-grey-dark font-semibold transform 
@@ -43,25 +67,21 @@ const IDO = (ido: IDOProps) => {
       <div className="flex flex-col">
         <div className="flex justify-between mt-4">
           <p className="text-grey-light">Cap</p>
-          <p className="text-grey-bright">{ido.saleInfo.hardCap.toString()}</p>
+          <p className="text-grey-bright">
+            {Number(ethers.formatEther(ido.saleInfo.hardCap.toString()))} USDT
+          </p>
         </div>
         <div className="flex justify-between mt-2">
           <p className="text-grey-light">Start Time</p>
-          <p className="text-grey-bright">
-            {new Date(Number(ido.timeInfo.startTime)).toLocaleString()}
-          </p>
+          <p className="text-grey-bright">{startTime.toLocaleString()}</p>
         </div>
         <div className="flex justify-between mt-2">
           <p className="text-grey-light">End Time</p>
-          <p className="text-grey-bright">
-            {new Date(Number(ido.timeInfo.endTime)).toLocaleString()}
-          </p>
+          <p className="text-grey-bright">{endTime.toLocaleString()}</p>
         </div>
         <div className="flex justify-between mt-2">
           <p className="text-grey-light">Claim Time</p>
-          <p className="text-grey-bright">
-            {new Date(Number(ido.timeInfo.claimTime)).toLocaleString()}
-          </p>
+          <p className="text-grey-bright">{claimTime.toLocaleString()}</p>
         </div>
         <div className="flex justify-between mt-2">
           <p className="text-grey-light">Price</p>
@@ -70,8 +90,13 @@ const IDO = (ido: IDOProps) => {
             {ethers.formatEther(ido.saleInfo.listingPrice.toString())} USDT
           </p>
         </div>
-        <p className="text-right text-grey-light mt-4">0%</p>
-        <span className="w-full h-3 mt-2 rounded-full bg-grey-bright/10"></span>
+        <p className="text-right text-grey-light mt-4">{progress}%</p>
+        <div className="flex justify-end mt-2 rounded-full bg-grey-bright/10">
+          <span
+            style={{ width: `${progress}%` }}
+            className="h-3 rounded-full bg-yellow"
+          ></span>
+        </div>
       </div>
     </div>
   );
