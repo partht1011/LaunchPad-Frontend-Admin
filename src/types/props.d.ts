@@ -48,6 +48,9 @@ export interface TimeInfoProps {
 }
 
 export interface IDOProps {
+    idoPool: string;
+    owner: string;
+    buyTokenAddress: string;
     saleTokenInfo: SaleTokenInfoProps;
     saleInfo: SaleInfoProps;
     tokenInfo: TokenInfoProps,

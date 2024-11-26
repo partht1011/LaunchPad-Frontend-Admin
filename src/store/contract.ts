@@ -1,1 +1,1 @@
-export const IDOFactoryAddress = '0xe56eBB425349A11177eFCEEa65b57ECef937185C'; // Replace with your contract address
+export const IDOFactoryAddress = '0x22E3C5B56DdE2BE912340784D06d06Eb636ECc66'; // Replace with your contract address
