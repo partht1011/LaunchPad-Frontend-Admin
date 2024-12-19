@@ -14,7 +14,7 @@ function Header() {
   return (
     <header className="order-0 fixed left-0 top-0 w-full h-[80px] flex items-center justify-between px-[200px] bg-primary drop-shadow-xl">
       <h1 className="text-3xl text-white font-bold">
-        Launch<span className="text-yellow">P</span>ad
+        Launch<span className="text-green">P</span>ad
       </h1>
       <nav>
         <a
